@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>PDF/Image Viewer Launcher</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 2rem;
+    }
+    button {
+      padding: 12px 20px;
+      margin: 10px;
+      font-size: 16px;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h1>Open PDF/Image Viewer</h1>
+  <button onclick="openViewer('pdf1')">Open PDF 1</button>
+  <button onclick="openViewer('pdf2')">Open PDF 2</button>
+
+  <script>
+    function openViewer(id) {
+      window.open(`viewer.html?id=${id}`, '_blank');
+    }
+  </script>
+</body>
+</html>

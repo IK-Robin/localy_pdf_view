@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Viewer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 1rem;
+      text-align: center;
+    }
+    .pdf-buttons button {
+      padding: 10px 16px;
+      margin: 10px;
+      font-size: 15px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .pdf-buttons button:hover {
+      background-color: #1e7e34;
+    }
+    iframe {
+      width: 100%;
+      height: 600px;
+      border: 1px solid #ccc;
+      margin-top: 20px;
+    }
+    .image-gallery {
+      margin-top: 30px;
+    }
+    .image-gallery img {
+      max-width: 300px;
+      margin: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2 id="viewer-title">Loading...</h2>
+  <div class="pdf-buttons" id="pdfButtons"></div>
+  <div id="pdfViewer"></div>
+  <div class="image-gallery" id="imageGallery"></div>
+
+  <script>
+    const data = {
+      pdf1: {
+        title: "PDF 1 Group",
+        pdfs: [
+          "./DDT_-_25_IMO_0002__RSMA_De_Guyane immeuble 2 DPE.pdf",
+          "./DDT_-_25_IMO_0002__RSMA_De_Guyane immeuble 2.pdf",
+        
+          
+
+        ],
+        images: [
+          "./WhatsApp Image 2025-03-31 à 17.25.46_9d88055b.jpg",
+          "./WhatsApp Image 2025-03-31 à 17.25.47_7fd230c2.jpg",
+          "./WhatsApp Image 2025-03-31 à 17.25.47_b9d14480.jpg",
+
+          
+
+          
+        ]
+      },
+      pdf2: {
+        title: "PDF 2 Group",
+        pdfs: [
+          "files/pdf2-1.pdf"
+        ],
+        images: []
+      }
+    };
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get("id");
+    const group = data[id];
+
+    if (!group) {
+      document.getElementById("viewer-title").innerText = "Invalid ID";
+    } else {
+      document.getElementById("viewer-title").innerText = group.title;
+
+      const pdfButtons = document.getElementById("pdfButtons");
+      const pdfViewer = document.getElementById("pdfViewer");
+      const imageGallery = document.getElementById("imageGallery");
+
+      group.pdfs.forEach((pdf, index) => {
+        const btn = document.createElement("button");
+        btn.innerText = `Open PDF ${index + 1}`;
+        btn.onclick = () => {
+          pdfViewer.innerHTML = `<iframe src="${pdf}"></iframe>`;
+        };
+        pdfButtons.appendChild(btn);
+      });
+
+      if (group.images.length > 0) {
+        group.images.forEach(img => {
+          const image = document.createElement("img");
+          image.src = img;
+          imageGallery.appendChild(image);
+        });
+      }
+    }
+  </script>
+
+</body>
+</html>
