@@ -24,7 +24,7 @@
     }
     iframe {
       width: 100%;
-      height: 600px;
+      height: 100vh;
       border: 1px solid #ccc;
       margin-top: 20px;
     }
@@ -37,12 +37,26 @@
       border: 1px solid #ddd;
       border-radius: 5px;
     }
+    #fullscreenBtn {
+      margin-top: 10px;
+      padding: 8px 16px;
+      font-size: 14px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #fullscreenBtn:hover {
+      background-color: #0056b3;
+    }
   </style>
 </head>
 <body>
 
   <h2 id="viewer-title">Loading...</h2>
   <div class="pdf-buttons" id="pdfButtons"></div>
+  <button id="fullscreenBtn" style="display:none;">View Fullscreen</button>
   <div id="pdfViewer"></div>
   <div class="image-gallery" id="imageGallery"></div>
 
@@ -52,19 +66,12 @@
         title: "PDF 1 Group",
         pdfs: [
           "./DDT_-_25_IMO_0002__RSMA_De_Guyane immeuble 2 DPE.pdf",
-          "./DDT_-_25_IMO_0002__RSMA_De_Guyane immeuble 2.pdf",
-        
-          
-
+          "./DDT_-_25_IMO_0002__RSMA_De_Guyane immeuble 2.pdf"
         ],
         images: [
           "./WhatsApp Image 2025-03-31 à 17.25.46_9d88055b.jpg",
           "./WhatsApp Image 2025-03-31 à 17.25.47_7fd230c2.jpg",
-          "./WhatsApp Image 2025-03-31 à 17.25.47_b9d14480.jpg",
-
-          
-
-          
+          "./WhatsApp Image 2025-03-31 à 17.25.47_b9d14480.jpg"
         ]
       },
       pdf2: {
@@ -80,20 +87,22 @@
     const id = urlParams.get("id");
     const group = data[id];
 
+    const pdfButtons = document.getElementById("pdfButtons");
+    const pdfViewer = document.getElementById("pdfViewer");
+    const imageGallery = document.getElementById("imageGallery");
+    const fullscreenBtn = document.getElementById("fullscreenBtn");
+
     if (!group) {
       document.getElementById("viewer-title").innerText = "Invalid ID";
     } else {
       document.getElementById("viewer-title").innerText = group.title;
 
-      const pdfButtons = document.getElementById("pdfButtons");
-      const pdfViewer = document.getElementById("pdfViewer");
-      const imageGallery = document.getElementById("imageGallery");
-
       group.pdfs.forEach((pdf, index) => {
         const btn = document.createElement("button");
         btn.innerText = `Open PDF ${index + 1}`;
         btn.onclick = () => {
-          pdfViewer.innerHTML = `<iframe src="${pdf}"></iframe>`;
+          pdfViewer.innerHTML = `<iframe id="pdfFrame" src="${pdf}"></iframe>`;
+          fullscreenBtn.style.display = "inline-block";
         };
         pdfButtons.appendChild(btn);
       });
@@ -106,6 +115,24 @@
         });
       }
     }
+
+    fullscreenBtn.onclick = () => {
+      const iframe = document.getElementById("pdfFrame");
+      if (!iframe) {
+        alert("Please open a PDF first.");
+        return;
+      }
+
+      if (iframe.requestFullscreen) {
+        iframe.requestFullscreen();
+      } else if (iframe.webkitRequestFullscreen) {
+        iframe.webkitRequestFullscreen();
+      } else if (iframe.msRequestFullscreen) {
+        iframe.msRequestFullscreen();
+      } else {
+        alert("Fullscreen not supported on this browser.");
+      }
+    };
   </script>
 
 </body>
